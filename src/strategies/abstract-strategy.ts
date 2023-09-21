@@ -1,6 +1,6 @@
-import type { Merger } from '@/src/mergers/merger'
+import type { Strategy } from '@/src/strategies/strategy'
 
-export abstract class AbstractMerger implements Merger {
+export abstract class AbstractStrategy implements Strategy {
   protected rules: any = {}
 
   public addRules(rules: any) {

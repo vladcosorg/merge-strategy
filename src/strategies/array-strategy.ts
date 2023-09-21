@@ -1,7 +1,7 @@
 import { isEqual } from 'lodash'
 
-import { AbstractMerger } from '@/src/mergers/abstract-merger'
-import { IndexMergerClass } from '@/src/mergers/index-merger'
+import { AbstractStrategy } from '@/src/strategies/abstract-strategy'
+import { MergeIndexesStrategy } from '@/src/strategies/merge-indexes-strategy'
 
 function ensureArray<T>(input: T | T[]): T[] {
   return Array.isArray(input) ? input : [input]
@@ -82,7 +82,16 @@ function defaultSearchFunction(
   return -1
 }
 
-export class ArrayMerger extends AbstractMerger {
+export type ArrayStrategyConfig = {
+  allowDuplicates?: boolean
+  insertMethod?: 'after' | 'before'
+  insertIndex?: number | ((currentRow: unknown, currentIndex: number) => number)
+  searchFunction?: (input, predicate) => number
+  ifNotFound: 'error' | 'insert' | 'skip'
+  wrapUnwrap: boolean
+}
+
+export class ArrayStrategy extends AbstractStrategy {
   protected allowDuplicates: boolean = true
   protected insertMethod: 'after' | 'before' = 'after'
   protected insertIndex?:
@@ -170,6 +179,8 @@ export class ArrayMerger extends AbstractMerger {
     const result = insertAt(source, index, destination, {
       allowDuplicates: this.allowDuplicates,
     })
-    return new IndexMergerClass().addRules(this.rules).operate(result, result)
+    return new MergeIndexesStrategy()
+      .addRules(this.rules)
+      .operate(result, result)
   }
 }

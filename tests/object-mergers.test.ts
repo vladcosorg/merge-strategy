@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest'
 
-import { mergeStrategyNew } from '@/src/factory'
+import { mergeStrategy } from '@/src/factory'
 
 describe('object replacement strategy', () => {
   describe('merge by key', () => {
     test('regular nested object', () => {
       expect(
-        mergeStrategyNew(
+        mergeStrategy(
           {
             b: {
               c: 1,
@@ -31,7 +31,7 @@ describe('object replacement strategy', () => {
   describe('merge by replacement', () => {
     test('regular nested object', () => {
       expect(
-        mergeStrategyNew(
+        mergeStrategy(
           {
             b: {
               c: 1,

@@ -1,14 +1,14 @@
 import { findIndex, findLastIndex } from 'lodash'
 import { describe, expect, test } from 'vitest'
 
-import { mergeStrategy, mergeStrategyNew } from '@/src/factory'
-import type { createInsertionArrayMerger } from '@/src/lib/array'
-import { ArrayMerger } from '@/src/mergers/array-merger'
+import { mergeStrategy } from '@/src/factory'
+import type { ArrayStrategyConfig } from '@/src/strategies/array-strategy'
+import { ArrayStrategy } from '@/src/strategies/array-strategy'
 
 describe('array merge strategy', () => {
   describe('merge by insertion', () => {
     test.each<{
-      config: Parameters<typeof createInsertionArrayMerger>[0]
+      config: ArrayStrategyConfig
       [index: string]: unknown
     }>([
       {
@@ -146,10 +146,10 @@ describe('array merge strategy', () => {
       },
     ])('$title', ({ destination, expected, config, source }) => {
       const exec = () =>
-        mergeStrategyNew(
+        mergeStrategy(
           destination,
           source ?? [1, 2, 3],
-          (factory) => new ArrayMerger(config),
+          (factory) => new ArrayStrategy(config),
         )
 
       if (config?.ifNotFound === 'error') {
@@ -194,7 +194,7 @@ describe('array merge strategy', () => {
       config: () => 1,
     }
     test('existing objects should be replaced with their destination counterparts and preserve the index', () => {
-      const result = mergeStrategyNew(
+      const result = mergeStrategy(
         [fun2Simialr],
         [fun2, fun1Simialr],
         (factory) => factory.uniqueArray(),
@@ -204,14 +204,14 @@ describe('array merge strategy', () => {
     })
     test('the merger should handle object additions and append them', () => {
       expect(
-        mergeStrategyNew([fun2Simialr, fun3], [fun2, fun1Simialr], (factory) =>
+        mergeStrategy([fun2Simialr, fun3], [fun2, fun1Simialr], (factory) =>
           factory.uniqueArray(),
         ),
       ).toStrictEqual([fun2, fun2Simialr, fun3])
     })
     test('the merger should handle non-object values among the merge candidates', () => {
       expect(
-        mergeStrategyNew(
+        mergeStrategy(
           [fun2Simialr, fun3],
           [fun2, fun1Simialr, 1, fun3],
           (factory) => factory.uniqueArray(),
@@ -222,7 +222,7 @@ describe('array merge strategy', () => {
 
   test('merge by replacement strategy', () => {
     expect(
-      mergeStrategyNew([3], [1, 2, 3], (factory) => factory.replace()),
+      mergeStrategy([3], [1, 2, 3], (factory) => factory.replace()),
     ).toStrictEqual([3])
   })
 })

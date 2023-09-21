@@ -1,15 +1,14 @@
 import { expect, test } from 'vitest'
 
 import { mergeStrategy } from '@/src/factory'
-import { createFallbackMerge } from '@/src/lib/shared'
 
 test('if inner merge strategy defined the outer strategy should use a default strategy', () => {
   const source = { foo: { bar: false }, one: 1 }
   const destination = { foo: { bar: true }, one: 2 }
   const result = { foo: { bar: false }, one: 2 }
-  const mergeResult = mergeStrategy(destination, source, {
-    foo: createFallbackMerge(),
-  })
+  const mergeResult = mergeStrategy(destination, source, (f) => ({
+    foo: f.fallback(),
+  }))
   expect(mergeResult).toStrictEqual(result)
 })
 

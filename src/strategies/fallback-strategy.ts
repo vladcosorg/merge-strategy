@@ -1,6 +1,6 @@
-import { AbstractMerger } from '@/src/mergers/abstract-merger'
+import { AbstractStrategy } from '@/src/strategies/abstract-strategy'
 
-export class FallbackMerger extends AbstractMerger {
+export class FallbackStrategy extends AbstractStrategy {
   public operate(destination: unknown, source: unknown) {
     if (source === undefined) {
       return destination

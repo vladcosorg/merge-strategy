@@ -1,17 +1,19 @@
-import { AbstractMerger } from '@/src/mergers/abstract-merger'
-import { ArrayMerger } from '@/src/mergers/array-merger'
-import { DefaultMerger } from '@/src/mergers/default-merger'
-import { FallbackMerger } from '@/src/mergers/fallback-merger'
-import { ReplacingMerger } from '@/src/mergers/replacing-merger'
+import { AbstractStrategy } from '@/src/strategies/abstract-strategy'
+import { ArrayStrategy } from '@/src/strategies/array-strategy'
+import { DefaultStrategy } from '@/src/strategies/default-strategy'
+import { FallbackStrategy } from '@/src/strategies/fallback-strategy'
+import { RemoveStrategy } from '@/src/strategies/remove-strategy'
+import { ReplaceStrategy } from '@/src/strategies/replace-strategy'
 
 export const strategyFactory = {
-  fallback: () => new FallbackMerger(),
-  replace: () => new ReplacingMerger(),
-  objectArray: () => new ArrayMerger(),
-  uniqueArray: () => new ArrayMerger().overwriteDuplicates(),
+  fallback: () => new FallbackStrategy(),
+  replace: () => new ReplaceStrategy(),
+  objectArray: () => new ArrayStrategy(),
+  uniqueArray: () => new ArrayStrategy().overwriteDuplicates(),
+  remove: () => new RemoveStrategy(),
 }
 
-export function mergeStrategyNew<D, S>(
+export function mergeStrategy<D, S>(
   destination: D,
   source: S,
   strategy?: (factory: typeof strategyFactory) => any,
@@ -20,20 +22,8 @@ export function mergeStrategyNew<D, S>(
     strategy = strategy(strategyFactory)
   }
 
-  if (!(strategy instanceof AbstractMerger)) {
-    strategy = new DefaultMerger(strategy ?? {})
-  }
-
-  return strategy.operate(destination, source)
-}
-
-export function mergeStrategy<D, S>(
-  destination: D,
-  source: S,
-  strategy?: D & S,
-): D & S {
-  if (!strategy || typeof strategy !== 'function') {
-    strategy = new DefaultMerger(strategy ?? [])
+  if (!(strategy instanceof AbstractStrategy)) {
+    strategy = new DefaultStrategy(strategy ?? {})
   }
 
   return strategy.operate(destination, source)
