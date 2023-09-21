@@ -12,7 +12,7 @@
       "dom",
       "es2022"
     ],
-    "module": "commonjs",
+    "module": "es2022",
     "noEmitOnError": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
@@ -51,6 +51,8 @@
   "include": [
     ".projenrc.js",
     "src/**/*.ts",
+    "tests/**/*.ts",
+    "vitest.config.ts",
     "tests/**/*.ts",
     ".projenrc.ts",
     "projenrc/**/*.ts"

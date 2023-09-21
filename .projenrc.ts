@@ -1,13 +1,26 @@
-import { TypeScriptProject } from "@vladcos/projen-base";
+import { TypeScriptProject } from '@vladcos/projen-base'
 
 const project = new TypeScriptProject({
-  defaultReleaseBranch: "main",
-  devDeps: ["@vladcos/projen-base"],
-  name: "merge-strategy",
+  defaultReleaseBranch: 'main',
+  devDeps: [
+    '@vladcos/projen-base',
+    '@types/lodash',
+    'astro',
+    '@astrojs/tailwind',
+    '@astrojs/react',
+    '@astrojs/node',
+  ],
+  tsconfigDev: {
+    compilerOptions: {
+      module: 'es2022',
+    },
+  },
+  name: 'merge-strategy',
   projenrcTs: true,
-
-  // deps: [],                /* Runtime dependencies of this module. */
+  vitest: true,
+  packemon: false,
+  deps: ['lodash'] /* Runtime dependencies of this module. */,
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // packageName: undefined,  /* The "name" in package.json. */
-});
-project.synth();
+})
+project.synth()
