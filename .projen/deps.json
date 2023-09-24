@@ -51,7 +51,17 @@
       "type": "build"
     },
     {
+      "name": "alias-hq",
+      "version": "^6",
+      "type": "build"
+    },
+    {
       "name": "astro",
+      "type": "build"
+    },
+    {
+      "name": "babel-plugin-module-resolver",
+      "version": "^5",
       "type": "build"
     },
     {
@@ -70,6 +80,11 @@
     {
       "name": "npm-check-updates",
       "version": "^16",
+      "type": "build"
+    },
+    {
+      "name": "packemon",
+      "version": "^3",
       "type": "build"
     },
     {

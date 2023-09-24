@@ -18,7 +18,7 @@ const project = new TypeScriptProject({
   name: 'merge-strategy',
   projenrcTs: true,
   vitest: true,
-  packemon: false,
+  packemon: true,
   deps: ['lodash'] /* Runtime dependencies of this module. */,
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // packageName: undefined,  /* The "name" in package.json. */

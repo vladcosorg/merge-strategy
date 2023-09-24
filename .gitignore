@@ -47,4 +47,5 @@ jspm_packages/
 /dist/
 !/.eslintrc.json
 !/vitest.config.ts
+!/./packemon.config.ts
 /.idea
