@@ -1,128 +1,112 @@
-<h2 style="font-weight: normal" align="center">
-   <img alt="Merge Strategy" src="./.github/logo.svg" width="500" /><br>
- configurable deep merge strategy for any kind of object or configuration
-</h2>
+<h1 align="center">
+    <img alt="linkertinker" src="./.github/logo1.svg" width="100" /><br>
+  merge-strategy
+</h1>
 
-**AWS Cloudfront invalidation requests cost 💰 once you're past the free limit (1000 / account). Issuing wildcard `/_` invalidations is
-not an option because it causes total cache revalidation and negatively impacts performance.
-This action provides a smart invalidation algorithm which just works. It issues as few invalidation requests as possible
-whilst preserving user cache and preventing useless cache drops.**
+<h6 align="center">
+Configurable deep merge strategy for any kind of object or configuration
+</h6>
 
-<!-- toc -->
+## Installation
 
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [Invalidation strategies](#invalidation-strategies)
-  - [Balanced](#balanced--recommended)
-  - [Frugal](#frugal)
-  - [Precise](#precise)
-- [Motivation](#motivation)
-- [Full example](#full-example)
-- [License](#license)
+```bash
+npm install merge-strategy
+```
 
-<!-- tocstop -->
 
 ## Usage
 
-```yaml
-- name: Upload changes to S3 and issue Cloudfront invalidations
-  uses: vladcosorg/action-s3-cloudfront-smart-deploy@v1
-  with:
-    source: local/path/to/dir
-    target: s3://my-bucket-name/
-    distribution: DOAJN11MNDAND
+```bash
+$ ncc <cmd> <opts>
 ```
 
-## Configuration
+Eg:
 
-| Key                     | Description                                                                                      | Required | Default    | Value Type                          | Example                                                                  |
-| ----------------------- | ------------------------------------------------------------------------------------------------ | -------- | ---------- | ----------------------------------- | ------------------------------------------------------------------------ |
-| `source`                | Path to sync the files **from**                                                                  | Yes ❗   | N/A        | `path` or `S3 bucket URI`           | `relative/path/to/dir` <br> `/absolute/path` <br> `s3://my-bucket-name/` |
-| `target`                | Target s3 bucket to sync **to**                                                                  | Yes ❗   | N/A        | `S3 bucket URI`                     | `s3://my-bucket-name/`                                                   |
-| `s3args`                | [See here](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html)                        | No       | N/A        | `string`                            | `--exact-timestamps --delete`                                            |
-| `distribution`          | Cloudfront distribution ID.                                                                      | No       | N/A        | `string`                            | `DOAJN11MNDAND`                                                          |
-| `cfargs`                | [See here](https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-invalidation.html) | No       | N/A        | `string`                            | `--debug`                                                                |
-| `invalidation-strategy` | Invalidation strategy [See description here](#invalidation-strategies)                           | No       | `BALANCED` | `BALANCED` or `PRECISE` or `FRUGAL` | `FRUGAL`                                                                 |
-| `balanced-limit`        | Maximum amount of invalidation requests when using `BALANCED` strategy                           | No       | `5`        | `positive number` or `Ininity`      | 10                                                                       |
-
-### Invalidation strategies
-
-### `BALANCED` ✅ recommended
-
-This strategy prioritizes issuing as many precise invalidations as possible (within set limits).
-If this is not possible, it falls back to a hybrid mode which would issue a mix of targeted invalidations and wildcard invalidations.
-And finally, if there are too many invalidations, it falls back to wildcard approach, **BUT** the wildcards are
-as specific as possible, so that the consumers of the app would redownload as little as possible.
-
- For example if the value of `balanced-limit` is set to `5`, then it will issue up
-to `5` invalidation requests. The action will never exceed this value.
-
-If the `balanced-limit` value is too low to perform all necessary precise invalidations, then it will resort to the
-wildcard approach, partially or completely.
-
-The generated wildcards will try to minimize the number of invalidated files by narrowing its scope.
-
-<div  align="center">
-<img alt="linkertinker" src="./.github/limit3c.svg" width="500" />
-<img alt="linkertinker" src="./.github/limit2c.svg" width="500" />
-<img alt="linkertinker" src="./.github/limit1c.svg" width="500" />
-</div>
-
-### `FRUGAL`
-
-It's a shortcut to the `balanced-limit` set to `1`. It means that the action would always issues at most
-1 invalidation request that is going to contain a scoped wildcard if you have more than 1 file that needs
-to be invalidated.
-
-🟠 **Attention**: This option, whilst very economical towards your AWS invalidation quota, would affect many
-unrelated paths. Use with caution.
-
-### `PRECISE`
-
-It's a shortcut to the `balanced-limit` set to `Infinity`. It means that the action would always issue precise
-invalidation requests, potentially
-
-🧨 **Warning**: This option could potentially cost you a significant amount of money, because it will issue
-1 invalidation request per 1 changed files. If you have lots of changed files that are frequently deployed to S3, think
-again before using this option.
-
-## Full example
-
-```yaml
-jobs:
-  deploy:
-    name: Upload to Amazon S3
-    runs-on: ubuntu-latest
-    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Configure AWS credentials from Test account
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: arn:aws:iam::111111111111:role/my-github-actions-role-test
-          aws-region: us-east-1
-      - name: Upload changes to S3 and issue Cloudfront invalidations
-        uses: vladcosorg/action-s3-cloudfront-smart-deploy@v1
-        with:
-          source: local/path/to/dir
-          target: s3://my-bucket-name/
-          distribution: DOAJN11MNDAND
+```bash
+$ ncc build input.js -o dist
 ```
 
-## Motivation
+If building an `.mjs` or `.js` module inside a `"type": "module"` [package boundary](https://nodejs.org/dist/latest-v16.x/docs/api/packages.html#packages_package_json_and_file_extensions), an ES module output will be created automatically.
 
-The available actions are using a simple yet inefficient approach that invalidates the changes using a precise
-1 file -> 1 invalidation request approach, which potentially can result in a quite large monthly bill, provided that
-your project is updated frequently and has a lot of files (exactly the case at my company).
-Another approach is to issue general, root invalidations like `/*` which would cause the consumers of your app
-to redownload the assets which did not actually change.
+Outputs the Node.js compact build of `input.js` into `dist/index.js`.
 
-This action features a `BALANCED` approach which is as precise and as economical as you want it to be.
+> Note: If the input file is using a `.cjs` extension, then so will the corresponding output file.
+> This is useful for packages that want to use `.js` files as modules in native Node.js using
+> a `"type": "module"` in the package.json file.
 
-## License
+#### Commands:
 
-This project is distributed under the [MIT license](LICENSE.md).
+```
+  build <input-file> [opts]
+  run <input-file> [opts]
+  cache clean|dir|size
+  help
+  version
+```
+
+#### Options:
+
+```
+  -o, --out [dir]          Output directory for build (defaults to dist)
+  -m, --minify             Minify output
+  -C, --no-cache           Skip build cache population
+  -s, --source-map         Generate source map
+  -a, --asset-builds       Build nested JS assets recursively, useful for
+                           when code is loaded as an asset eg for workers.
+  --no-source-map-register Skip source-map-register source map support
+  -e, --external [mod]     Skip bundling 'mod'. Can be used many times
+  -q, --quiet              Disable build summaries / non-error outputs
+  -w, --watch              Start a watched build
+  -t, --transpile-only     Use transpileOnly option with the ts-loader
+  --v8-cache               Emit a build using the v8 compile cache
+  --license [file]         Adds a file containing licensing information to the output
+  --stats-out [file]       Emit webpack stats as json to the specified output file
+  --target [es]            ECMAScript target to use for output (default: es2015)
+                           Learn more: https://webpack.js.org/configuration/target
+  -d, --debug              Show debug logs
+```
+
+### Execution Testing
+
+For testing and debugging, a file can be built into a temporary directory and executed with full source maps support with the command:
+
+```bash
+$ ncc run input.js
+```
+
+# Motivation
+
+This is yet another replacement for the `npm link`, which has tons of issues and works only for trivial cases. This is
+also a replacement for other replacement packages which are either not maintained or a very clunky to use.
+
+[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
+[![Version](https://img.shields.io/npm/v/link-and-tink.svg)](https://npmjs.org/package/link-and-tink)
+[![Downloads/week](https://img.shields.io/npm/dw/link-and-tink.svg)](https://npmjs.org/package/link-and-tink)
+[![License](https://img.shields.io/npm/l/link-and-tink.svg)](https://github.com/oclif/hello-world/blob/main/package.json)
+
+# Features
+
+- Survives npm install
+- All production dependencies and peer dependencies are installed along the main package (unlike npm link)
+- Automatic reinstall of the changed dependencies
+- No transitive dependencies
+- Works with CRA, Vite, etc. hot reloading / hot module replacement (HMR)
+- Fully automatic syncronisation between your project and linked dependency
+- No 3rd-party config options in your package.json
+- Out of the box support for TypeScript transpiler and other watchers
+- Bidirectional sync
+
+# Usage
+
+# To Do
+
+- Support other than NPM package managers
+
+# Recipes
+
+#Comparison table
+
+https://docs.npmjs.com/cli/v9/commands/npm-link
+https://github.com/wclr/yalc
+https://github.com/privatenumber/link
+https://hirok.io/posts/avoid-npm-link
