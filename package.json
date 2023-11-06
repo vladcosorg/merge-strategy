@@ -34,7 +34,7 @@
     "@vladcos/projen-base": "^0.0.119",
     "@vladcos/tsconfig": "latest",
     "alias-hq": "^6",
-    "astro": "^3.4.0",
+    "astro": "^3.4.3",
     "babel-plugin-module-resolver": "^5",
     "eslint": "^8",
     "eslint-import-resolver-node": "^0.3.9",
