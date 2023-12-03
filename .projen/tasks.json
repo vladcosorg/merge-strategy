@@ -232,16 +232,13 @@
       },
       "steps": [
         {
-          "exec": "npm update npm-check-updates"
-        },
-        {
-          "exec": "npm-check-updates --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@astrojs/node,@astrojs/react,@astrojs/tailwind,@types/lodash,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,@vladcos/projen-base,alias-hq,astro,babel-plugin-module-resolver,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint,npm-check-updates,packemon,prettier,projen,standard-version,ts-node,tsconfig-paths,tsx,typescript,vitest,lodash"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@astrojs/node,@astrojs/react,@astrojs/tailwind,@types/lodash,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,@vladcos/eslint-config,@vladcos/prettier-config,@vladcos/projen-base,@vladcos/tsconfig,alias-hq,astro,babel-plugin-module-resolver,constructs,eslint-import-resolver-typescript,eslint,packemon,prettier,projen,standard-version,ts-node,tsconfig-paths,tsx,typescript,lodash"
         },
         {
           "exec": "npm install"
         },
         {
-          "exec": "npm update @astrojs/node @astrojs/react @astrojs/tailwind @types/lodash @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser @vladcos/projen-base alias-hq astro babel-plugin-module-resolver eslint-import-resolver-node eslint-import-resolver-typescript eslint npm-check-updates packemon prettier projen standard-version ts-node tsconfig-paths tsx typescript vitest lodash"
+          "exec": "npm update @astrojs/node @astrojs/react @astrojs/tailwind @types/lodash @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser @vladcos/eslint-config @vladcos/prettier-config @vladcos/projen-base @vladcos/tsconfig alias-hq astro babel-plugin-module-resolver constructs eslint-import-resolver-typescript eslint packemon prettier projen standard-version ts-node tsconfig-paths tsx typescript lodash"
         },
         {
           "exec": "npx projen"
