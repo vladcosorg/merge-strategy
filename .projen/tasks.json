@@ -233,13 +233,13 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@astrojs/node,@astrojs/react,@astrojs/tailwind,@types/lodash,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,@vladcos/eslint-config,@vladcos/prettier-config,@vladcos/projen-base,@vladcos/tsconfig,alias-hq,astro,babel-plugin-module-resolver,constructs,eslint-import-resolver-typescript,eslint,packemon,prettier,projen,standard-version,ts-node,tsconfig-paths,tsx,typescript,vitest,lodash"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@astrojs/node,@astrojs/react,@astrojs/tailwind,@types/lodash,@vladcos/eslint-config,@vladcos/prettier-config,@vladcos/projen-base,@vladcos/tsconfig,astro,eslint-import-resolver-typescript,projen,ts-node,typescript,vite-tsconfig-paths,lodash"
         },
         {
           "exec": "npm install"
         },
         {
-          "exec": "npm update @astrojs/node @astrojs/react @astrojs/tailwind @types/lodash @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser @vladcos/eslint-config @vladcos/prettier-config @vladcos/projen-base @vladcos/tsconfig alias-hq astro babel-plugin-module-resolver constructs eslint-import-resolver-typescript eslint packemon prettier projen standard-version ts-node tsconfig-paths tsx typescript vitest lodash"
+          "exec": "npm update @astrojs/node @astrojs/react @astrojs/tailwind @types/lodash @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser @vladcos/eslint-config @vladcos/prettier-config @vladcos/projen-base @vladcos/tsconfig alias-hq astro babel-plugin-module-resolver constructs eslint-import-resolver-typescript eslint packemon prettier projen standard-version ts-node tsconfig-paths tsx typescript vite-tsconfig-paths vitest lodash"
         },
         {
           "exec": "npx projen"
