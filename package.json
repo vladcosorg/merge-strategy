@@ -41,7 +41,7 @@
     "eslint-import-resolver-typescript": "^3.6.1",
     "packemon": "^3",
     "prettier": "^3",
-    "projen": "^0.79.24",
+    "projen": "^0.79.27",
     "standard-version": "^9",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4",
