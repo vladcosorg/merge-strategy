@@ -233,7 +233,7 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@astrojs/node,@astrojs/react,@astrojs/tailwind,@types/lodash,@vladcos/eslint-config,@vladcos/prettier-config,@vladcos/projen-base,@vladcos/tsconfig,astro,eslint-import-resolver-typescript,projen,ts-node,typescript,vite-tsconfig-paths,lodash"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@astrojs/node,@astrojs/react,@astrojs/tailwind,@types/lodash,@vladcos/eslint-config,@vladcos/prettier-config,@vladcos/projen-base,@vladcos/tsconfig,astro,eslint-import-resolver-typescript,projen,ts-node,typescript,lodash"
         },
         {
           "exec": "npm install"
