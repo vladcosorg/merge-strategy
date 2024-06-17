@@ -31,7 +31,7 @@
     "@typescript-eslint/parser": "^7",
     "@vladcos/eslint-config": "latest",
     "@vladcos/prettier-config": "latest",
-    "@vladcos/projen-base": "^0.0.265",
+    "@vladcos/projen-base": "^0.0.273",
     "@vladcos/tsconfig": "latest",
     "alias-hq": "^6",
     "astro": "^3.6.5",
